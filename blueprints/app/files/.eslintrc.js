@@ -3,13 +3,16 @@
 module.exports = {
   root: true,
   parser: '<%= typescript ? '@typescript-eslint/parser' : 'babel-eslint' %>',
-  parserOptions: {
+  parserOptions:<% if (typescript) {%> {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
+  }<% } else { %> {
     ecmaVersion: 2018,
     sourceType: 'module',
     ecmaFeatures: {
       legacyDecorators: true,
     },
-  },
+  }<% } %>,
   plugins: ['ember'<% if (typescript) { %>, '@typescript-eslint'<% } %>],
   extends: [
     'eslint:recommended',
@@ -27,6 +30,7 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
       ],
       rules: {},
     },
